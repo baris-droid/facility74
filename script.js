@@ -1,23 +1,25 @@
-// Ekranda gösterilecek gizli belgeler veya diyaloglar
+// terminal.js
+
+// Secret documents or dialogues to be displayed on the screen
 const terminalLines = [
-    "BAĞLANTI KURULUYOR...",
-    "KİMLİK DOĞRULANIYOR: BİLİNMEYEN KULLANICI",
-    "UYARI: TESİS-74 VERİTABANINA İZİNSİZ GİRİŞ TESPİT EDİLDİ.",
+    "ESTABLISHING CONNECTION...",
+    "AUTHENTICATING: UNKNOWN USER",
+    "WARNING: UNAUTHORIZED ACCESS TO FACILITY-74 DATABASE DETECTED.",
     "--------------------------------------------------",
-    "DİREKTÖR GÜNLÜĞÜ - KAYIT #402",
-    "Yerin 3.400 metre altındayız. Sektör 4'teki güvenlik ihlali artık gizlenemez boyutta.",
-    "Tamir ekiplerini oraya göndermeye devam ediyoruz ama hiçbiri geri dönmüyor.",
-    "Oda karanlık. Işıklar titriyor.",
-    "Eğer bu mesajı okuyorsan... Yeşilli kapılardan uzak dur.",
-    "Aksi takdirde, [VERİ SİLİNDİ] seni de bulacaktır."
+    "DIRECTOR'S LOG - ENTRY #402",
+    "We are 3,400 meters underground. The security breach in Sector 4 can no longer be contained.",
+    "We keep sending repair crews down there, but none of them return.",
+    "The room is dark. The lights are flickering.",
+    "If you are reading this message... Stay away from the green doors.",
+    "Otherwise, [REDACTED] will find you too."
 ];
 
 const outputScreen = document.getElementById('output-screen');
 
-// Modern asenkron bekletme fonksiyonu (C#'taki Task.Delay mantığı)
+// Modern asynchronous delay function
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-// Daktilo efekti ile tek tek harf yazdıran fonksiyon
+// Function to print text letter by letter with a typewriter effect
 async function typeLine(text, speed = 30) {
     const p = document.createElement('p');
     outputScreen.appendChild(p);
@@ -28,30 +30,30 @@ async function typeLine(text, speed = 30) {
     }
 }
 
-// Tüm satırları sırayla çalıştıran ana fonksiyon
+// Main function to run all lines sequentially
 async function bootTerminal() {
-    await delay(1000); // Ekran açılmadan önce 1 saniye bekle
+    await delay(1000); // Wait 1 second before the screen turns on
 
     for (let i = 0; i < terminalLines.length; i++) {
         let currentLine = terminalLines[i];
         
-        // Veri Silindi (Redacted) efekti için ufak bir mantık
-        if (currentLine.includes("[VERİ SİLİNDİ]")) {
-            currentLine = currentLine.replace("[VERİ SİLİNDİ]", "<span style='background-color: var(--text-color); color: var(--bg-color);'>[VERİ SİLİNDİ]</span>");
+        // Logic for the Redacted text effect
+        if (currentLine.includes("[REDACTED]")) {
+            currentLine = currentLine.replace("[REDACTED]", "<span style='background-color: var(--text-color); color: var(--bg-color);'>[REDACTED]</span>");
             
-            // Eğer HTML etiketi içeriyorsa daktilo efekti yapmadan direkt bas
+            // If it contains an HTML tag, print directly without the typewriter effect
             const p = document.createElement('p');
             p.innerHTML = currentLine;
             outputScreen.appendChild(p);
             await delay(1000);
         } else {
             await typeLine(currentLine);
-            await delay(400); // Satırlar arası bekleme
+            await delay(400); // Wait between lines
         }
     }
 }
 
-// Sayfa yüklendiğinde sistemi başlat
+// Boot the system when the page loads
 window.onload = () => {
     bootTerminal();
 };
