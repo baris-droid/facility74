@@ -1,0 +1,103 @@
+/* Temel Sıfırlama ve Renk Paleti */
+:root {
+    --bg-color: #050505;
+    --text-color: #33ff33; /* Klasik hacker/terminal yeşili */
+    --alert-color: #ff3333;
+    --font-stack: 'Courier New', Courier, monospace;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-stack);
+    overflow: hidden; /* Sayfada kaydırma çubuğu olmasın */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Ana İçerik Kutusu */
+.terminal-container {
+    width: 90%;
+    max-width: 800px;
+    height: 80vh;
+    padding: 20px;
+    border: 1px solid #1a4d1a;
+    box-shadow: 0 0 15px rgba(51, 255, 51, 0.2);
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+
+header {
+    border-bottom: 1px dashed var(--text-color);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+header h1 {
+    font-size: 1.2rem;
+    margin: 0 0 5px 0;
+    letter-spacing: 2px;
+}
+
+.status-secure {
+    color: var(--alert-color);
+    animation: pulse 2s infinite;
+}
+
+/* Çıktı Ekranı */
+#output-screen {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+/* Yanıp Sönen İmleç */
+.input-line {
+    display: flex;
+    align-items: center;
+}
+
+.prompt {
+    margin-right: 10px;
+}
+
+.blinking-cursor {
+    display: inline-block;
+    width: 10px;
+    height: 1.2em;
+    background-color: var(--text-color);
+    animation: blink 1s step-end infinite;
+}
+
+/* --- EFEKTLER --- */
+
+/* Tüplü Monitör (CRT) Tarama Çizgileri Efekti */
+.crt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none; /* Tıklamaları engellemesin */
+    z-index: 100;
+}
+
+/* Animasyonlar */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
